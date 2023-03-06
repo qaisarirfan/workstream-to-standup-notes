@@ -1,10 +1,11 @@
 const { REGEX_FOR_TAG, REGEX_FOR_TASK, REGEX_FOR_TIME } = require('./constants');
 
-const parseDescription = (description) => description
+const parseDescription = (description) => (description.length > 0 ? description
+  .trim()
   .replace(REGEX_FOR_TAG, '')
   .replace(REGEX_FOR_TIME, '')
   .split(/\n/gm)
-  .map((val) => val.trim());
+  .map((val) => val.trim().replace(/\s+/g, ' ')) : []);
 
 const getTasks = (description) => {
   const tasks = [];

@@ -5,7 +5,7 @@ const json2csv = require('json2csv');
 
 const { parseDescription, getTasks } = require('./utils');
 const {
-  PROJECTS_LOGS_PATH, STANDUP_NOTES_PATH, PROJECTS_LOG_FILE, STANDUP_NOTES_FILE, TEAMS, EMAIL,
+  PROJECTS_LOGS_PATH, STANDUP_NOTES_PATH, STANDUP_NOTES_FILE, TEAMS, EMAIL,
 } = require('./config');
 
 const files = fs.readdirSync(PROJECTS_LOGS_PATH);

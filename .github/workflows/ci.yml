@@ -33,21 +33,19 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Setup Pages
         uses: actions/configure-pages@v3
-      - run: |
-          cd web
       - name: Install packages
-        run: npm i
+        run: cd web && npm i
       - name: Build assets
-        run: npm run build
+        run: cd web && npm run build
       - name: Upload assets
         uses: actions/upload-artifact@v3
         with:
           name: static-site
-          path: build/
+          path: web/build/
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: ./build
+          path: ./web/build
 
   release:
     name: Release Project

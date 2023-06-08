@@ -56,7 +56,7 @@ function Drawer({
             id="email"
             onChange={onInputChangeHandler('email')}
             type="email"
-            value={data.email}
+            value={data?.email}
           />
         </label>
 
@@ -67,7 +67,7 @@ function Drawer({
             id="team"
             onChange={onTeamsInputChangeHandler('teams')}
             type="text"
-            value={data.teams.join(',')}
+            value={data?.teams?.join(',')}
           />
         </label>
 
@@ -78,7 +78,7 @@ function Drawer({
             id="team"
             onChange={onInputChangeHandler('task_regex')}
             type="text"
-            value={data.task_regex}
+            value={data?.task_regex}
           />
         </label>
         <div className="mt-6 flex items-center justify-end gap-x-6">

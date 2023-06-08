@@ -1,21 +1,12 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: build
+name: Build & Release
 
 on:
   pull_request:
   push:
     branches: [main]
-
-concurrency:
-  group: "pages"
-  cancel-in-progress: false
-
-permissions:
-    contents: read
-    pages: write
-    id-token: write
 
 jobs:
   build:
@@ -31,8 +22,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
       - name: Install packages
         run: cd web && npm i
       - name: Build assets
@@ -41,11 +30,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: static-site
-          path: web/build/
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v1
-        with:
-          path: ./web/build
+          path: ./web/build/
 
   release:
     name: Release Project
@@ -81,14 +66,3 @@ jobs:
           asset_path: ./release.zip
           asset_name: site-v${{ github.run_number }}.zip
           asset_content_type: application/zip
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2

@@ -2,6 +2,7 @@
   "name": "web",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
   "dependencies": {
     "clsx": "^1.2.1",
     "luxon": "^3.3.0",

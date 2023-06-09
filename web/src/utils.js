@@ -31,7 +31,7 @@ export const parseDescription = (description) => (description.length > 0
   : []);
 
 export const getTasks = (regex, description) => {
-  const newRegex = regexParser(regex) || REGEX_FOR_TASK;
+  const newRegex = regexParser(regex || String(REGEX_FOR_TASK));
   const tasks = [];
   let x;
   // eslint-disable-next-line no-cond-assign
@@ -47,7 +47,8 @@ export const copyToClipboard = async (text) => {
 
 export const parseProjectsLogToStandupNotes = (records, data) => {
   let parseData = [];
-  const filterRecords = records.data.filter((record) => data.teams.includes(record.Team));
+  const filterRecords = data?.teams?.length > 0
+    ? records.data.filter((record) => data?.teams?.includes(record.Team)) : records.data;
   const notes = filterRecords.map((record, index) => {
     const filteredPrevItem = filterRecords[index - 1];
 
@@ -55,11 +56,11 @@ export const parseProjectsLogToStandupNotes = (records, data) => {
 
     if (filteredPrevItem) {
       const description = parseDescription(filteredPrevItem.Description);
-      const todayTasks = getTasks(data.task_regex, description.join(' '));
+      const todayTasks = getTasks(data?.task_regex, description.join(' '));
 
       return {
         Timestamp: date.toFormat('MM/dd/yy hh:mm:ss'),
-        'Email Address': data.email,
+        'Email Address': data?.email,
         Date: date.toFormat('MM/dd/yy'),
         Today: todayTasks.length > 0
           ? `will continue work on ${todayTasks.join(', ')}`
@@ -72,7 +73,7 @@ export const parseProjectsLogToStandupNotes = (records, data) => {
     const tasks = getTasks(data.task_regex, description.join(' '));
     return {
       Timestamp: date.toFormat('MM/dd/yy hh:mm:ss'),
-      'Email Address': data.email,
+      'Email Address': data?.email,
       Date: date.toFormat('MM/dd/yy'),
       Today: tasks.length > 0
         ? `will continue work on ${tasks.join(', ')}`

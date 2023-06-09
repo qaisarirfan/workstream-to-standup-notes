@@ -1,5 +1,6 @@
 import React from 'react';
 import { GrClose } from 'react-icons/gr';
+import { toast } from 'react-toastify';
 import clsx from 'clsx';
 import PropsTypes from 'prop-types';
 
@@ -25,6 +26,10 @@ function Drawer({
 
   const onSaveHandler = () => {
     localStorage.setItem('wsn', JSON.stringify(data));
+    toast('Wow so easy!', {
+      type: 'success', position: 'bottom-center', hideProgressBar: true,
+    });
+    onClose();
   };
 
   return (

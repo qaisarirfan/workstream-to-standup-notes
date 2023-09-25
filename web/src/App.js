@@ -18,7 +18,7 @@ function App() {
     selector: (row) => row[column],
     wrap: true,
     width: '180px',
-    ...((column === 'Today' || column === 'Yesterday') && { width: 'unset' }),
+    ...((column === 'Today' || column === 'Yesterday' || column === 'Description') && { width: 'unset' }),
   }));
 
   useEffect(() => {

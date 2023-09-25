@@ -7,7 +7,7 @@ import PropsTypes from 'prop-types';
 
 import Button from '../Button';
 
-import { copyToClipboard, downloadCSV, parseProjectsLogToStandupNotes } from '../../utils';
+import { copyToClipboard, downloadCSV, parseProjectsLogToStandupNotesWH } from '../../utils';
 
 function Header({
   data, onDrawerOpen, jsonData, csvData,
@@ -54,7 +54,8 @@ function Header({
       fileReader.readAsText(files[0], 'UTF-8');
       fileReader.onload = ({ target: { result } }) => {
         const records = papaparse.parse(result, { header: true, skipEmptyLines: true });
-        const parsedData = parseProjectsLogToStandupNotes(records, data);
+        const parsedData = parseProjectsLogToStandupNotesWH(records, data);
+        console.log(parsedData);
         setCsv(parsedData.csv);
         setJson(parsedData.json);
       };

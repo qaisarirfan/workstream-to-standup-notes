@@ -30,6 +30,15 @@ export const parseDescription = (description) => (description.length > 0
     .map((val) => val.trim().replace(/\s+/g, ' '))
   : []);
 
+export const parseDescriptionWH = (description) => (description.length > 0
+  ? description
+    .trim()
+    .replace(/\r|\n/gm, ', ')
+    .replace(/\s+/gm, ' ')
+    .split('[')
+    .join('\n[')
+  : []);
+
 export const getTasks = (regex, description) => {
   const newRegex = regexParser(regex || String(REGEX_FOR_TASK));
   const tasks = [];
@@ -80,6 +89,40 @@ export const parseProjectsLogToStandupNotes = (records, data) => {
         : 'will continue work on assigned tasks',
       Yesterday: description.join('\n'),
       Blockers: '',
+    };
+  });
+  parseData = [...parseData, ...notes];
+  if (parseData.length > 0) {
+    return {
+      json: parseData,
+      csv: papaparse.unparse(parseData),
+    };
+  }
+  return {
+    join: [],
+    csv: '',
+  };
+};
+
+export const parseProjectsLogToStandupNotesWH = (records, data) => {
+  let parseData = [];
+  const filterRecords = data?.teams?.length > 0
+    ? records.data.filter((record) => !data?.teams?.includes(record.Team)) : records.data;
+  const notes = filterRecords.map((record, index) => {
+    const filteredItem = filterRecords[index];
+    const date = DateTime.fromJSDate(new Date(record.Date)).toFormat('dd/MM/yy');
+
+    if (filteredItem) {
+      const description = parseDescriptionWH(filteredItem.Description);
+      return {
+        Date: date,
+        Description: description,
+      };
+    }
+    const description = parseDescriptionWH(record.Description);
+    return {
+      Date: date,
+      Description: description,
     };
   });
   parseData = [...parseData, ...notes];
